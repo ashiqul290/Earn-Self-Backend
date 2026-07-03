@@ -4,6 +4,7 @@ const cloudinary = require('../utils/cloudinary');
 const path = require('path');
 const fs = require('fs');
 const { asyncHandler } = require('../utils/asyncHandler');
+const { apiResponse } = require('../utils/apiResponse');
 
 const signup = asyncHandler(async (req, res, next) => {
   const { fullname, email, phone, password, address, role } = req.body;
@@ -43,11 +44,53 @@ const signup = asyncHandler(async (req, res, next) => {
       email: user.email,
       phone: user.phone,
       address: user.address,
-        img: user.img,
         imgPublicId: user.imgPublicId,
       role: user.role,
     },
   });
 });
 
-module.exports = { signup };
+const login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return apiResponse(res, 400, 'email and password are required');
+  }
+
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) {
+    return apiResponse(res, 404, 'User not found');
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return apiResponse(res, 401, 'Invalid password');
+  }
+
+  req.session.user = {
+    id: user._id,
+    email: user.email,
+    role: user.role,
+    login: true,
+  };
+
+  return apiResponse(res, 200, 'Login successful');
+});
+
+const getAllUsers = asyncHandler(async (req, res, next) => {
+  const users = await User.find({}).select('-password');
+  return apiResponse(res, 200, 'Users fetched successfully', users);
+});
+
+const getSingleUser = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id).select('-password');
+  if (!user) {
+    return apiResponse(res, 404, 'User not found');
+  }
+
+  return apiResponse(res, 200, 'User fetched successfully', user);
+});
+
+module.exports = { signup, login, getAllUsers, getSingleUser };

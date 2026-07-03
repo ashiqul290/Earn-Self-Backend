@@ -14,9 +14,11 @@ dbConfig();
 
 app.use(express.json());
 
-app.use('/route', router);
+
 
  
+
+
 app.use(session({
   store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   name : 'TeamManagementSystem',
@@ -27,6 +29,7 @@ app.use(session({
   cookie: { secure: false }
 }))
 
+app.use('/route', router);
 
 app.use(notFound);
 app.use(globalErrHandler);
