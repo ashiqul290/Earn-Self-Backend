@@ -4,6 +4,6 @@ const { uploadImage } = require('../../../middleware/upload.middleware');
 
 const auth = express.Router();
 
-auth.post('/signup', uploadImage, signup);
+auth.post('/signup', signup);
 
 module.exports = auth;

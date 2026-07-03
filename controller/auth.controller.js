@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const User = require('../model/user.model');
 const cloudinary = require('../utils/cloudinary');
-const streamifier = require('streamifier');
+const path = require('path');
+const fs = require('fs');
 const { asyncHandler } = require('../utils/asyncHandler');
 
 const signup = asyncHandler(async (req, res, next) => {
@@ -21,30 +22,7 @@ const signup = asyncHandler(async (req, res, next) => {
         message: 'User already exists with this email',
       });
     }
-
-    let imgUrl = '';
-
-    const uploadedFile = req.files?.img?.[0] || req.file;
-
-    if (uploadedFile) {
-      const result = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          {
-            folder: 'team-management-system',
-            resource_type: 'image',
-          },
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result);
-          }
-        );
-
-        streamifier.createReadStream(uploadedFile.buffer).pipe(uploadStream);
-      });
-
-      imgUrl = result.secure_url;
-    }
-
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -53,7 +31,6 @@ const signup = asyncHandler(async (req, res, next) => {
       phone,
       password: hashedPassword,
       address,
-      img: imgUrl,
       role: role || 'normaruser',
     });
 
@@ -66,7 +43,8 @@ const signup = asyncHandler(async (req, res, next) => {
       email: user.email,
       phone: user.phone,
       address: user.address,
-      img: user.img,
+        img: user.img,
+        imgPublicId: user.imgPublicId,
       role: user.role,
     },
   });

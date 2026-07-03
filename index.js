@@ -14,7 +14,7 @@ dbConfig();
 
 app.use(express.json());
 
-app.use('/api', router);
+app.use('/route', router);
 
  
 app.use(session({
