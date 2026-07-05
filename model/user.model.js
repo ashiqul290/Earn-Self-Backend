@@ -7,6 +7,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    name: {
+      type: String,
+      trim: true,
+      default: '',
+    },
     email: {
       type: String,
       required: true,
@@ -27,11 +32,63 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    
+    img: {
+      type: String,
+      default: '',
+    },
+    imgPublicId: {
+      type: String,
+      default: '',
+    },
+    trainer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+      index: true,
+    },
+    teamLeader: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+      index: true,
+    },
     role: {
       type: String,
-      enum: ['normaruser', 'primiumuser',"trainer",'subadmin', 'admin'],
-      default: 'normaruser',
+      enum: ['admin', 'teamleader', 'trainer', 'premiumuser', 'normaluser'],
+      default: 'normaluser',
+      index: true,
+    },
+    status: {
+      type: String,
+      enum: ['active', 'inactive', 'pending', 'blocked'],
+      default: 'active',
+      index: true,
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
+    earnings: {
+      type: Number,
+      default: 0,
+    },
+    promoCode: {
+      type: String,
+      trim: true,
+      default: '',
+      index: true,
+    },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
     },
   },
   {

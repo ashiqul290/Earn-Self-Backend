@@ -1,17 +1,21 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
+const helmet = require('helmet');
 const { globalErrHandler } = require('./utils/globalErrHandler');
 const notFound = require('./utils/notFound');
 const { dbConfig } = require('./config/bd.config');
 const router = require('./route');
-const session = require('express-session')
-const {MongoStore} = require('connect-mongo');
+const session = require('express-session');
+const { MongoStore } = require('connect-mongo');
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 dbConfig();
 
+app.use(helmet());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
 
