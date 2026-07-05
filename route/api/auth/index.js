@@ -35,15 +35,15 @@ auth.post('/logout', isAuthoraize, logout);
 auth.get('/me', isAuthoraize, getCurrentUser);
 // GET /api/auth/all-users
 auth.get('/all-users', isAuthoraize, authorizeRoles('admin'), getAllUsers);
-// // GET /api/auth/single-users/:id
-// auth.get('/single-users/:id', isAuthoraize, getSingleUser);
-// // GET /api/auth/by-role/:role
-// auth.get('/by-role/:role', isAuthoraize, authorizeRoles('admin', 'teamleader'), listByRole);
-// // GET /api/auth/trainer-students/:id
-// auth.get('/trainer-students/:id', isAuthoraize, authorizeRoles('admin', 'teamleader', 'trainer'), trainerStudents);
-// // PUT /api/auth/users/:id/role
-// auth.put('/users/:id/role', isAuthoraize, authorizeRoles('admin'), promoteUser);
-// // PUT /api/auth/promote/:id
-// auth.put('/promote/:id', isAuthoraize, authorizeRoles('admin'), promoteUser);
+// GET /api/auth/single-users/:id
+auth.get('/single-users/:id', isAuthoraize, getSingleUser);
+// GET /api/auth/by-role/:role
+auth.get('/by-role/:role', isAuthoraize, authorizeRoles('admin', 'teamleader'), listByRole);
+// GET /api/auth/trainer-students/:id
+auth.get('/trainer-students/:id', isAuthoraize, authorizeRoles('admin', 'teamleader', 'trainer'), trainerStudents);
+// PUT /api/auth/users/:id/role
+auth.put('/users/:id/role', isAuthoraize, authorizeRoles('admin'), promoteUser);
+// PUT /api/auth/promote/:id
+auth.put('/promote/:id', isAuthoraize, authorizeRoles('admin'), promoteUser);
 
 module.exports = auth;

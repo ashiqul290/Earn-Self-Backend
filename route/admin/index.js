@@ -9,7 +9,7 @@ const adminRouter = express.Router();
 adminRouter.get('/api/dashboard-stats', isAuthoraize, authorizeRoles('admin'), getDashboardStats);
 // POST /admin/users/manage
 adminRouter.post('/users/manage', isAuthoraize, authorizeRoles('admin'), handleUserManagementAction);
-// GET /admin/:page?
-adminRouter.get('/:page?', isAuthoraize, authorizeRoles('admin'), renderAdminPage);
+// GET /admin/:page
+adminRouter.get('/:page', isAuthoraize, authorizeRoles('admin'), renderAdminPage);
 
 module.exports = adminRouter;
