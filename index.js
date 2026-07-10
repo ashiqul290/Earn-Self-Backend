@@ -34,6 +34,9 @@ app.use(session({
 }))
 
 app.use('/route', router);
+app.get('/home', (req, res) => {
+  res.send('Welcome to the Team Management System API');
+});
 
 app.use(notFound);
 app.use(globalErrHandler);
