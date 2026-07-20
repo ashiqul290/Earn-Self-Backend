@@ -255,49 +255,49 @@ const trainerStudents = asyncHandler(async (req, res, next) => {
   });
 });
 
-const promoteUser = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const { role: newRole, trainerId } = req.body;
+// const promoteUser = asyncHandler(async (req, res, next) => {
+//   const { id } = req.params;
+//   const { role: newRole, trainerId } = req.body;
 
-  const actorRole = req.session?.user?.role;
-  if (!actorRole) {
-    return apiResponse(res, 403, 'Not authorized');
-  }
+//   const actorRole = req.session?.user?.role;
+//   if (!actorRole) {
+//     return apiResponse(res, 403, 'Not authorized');
+//   }
 
-  if (actorRole !== 'admin') {
-    return apiResponse(res, 403, 'Only admin can change roles');
-  }
+//   if (actorRole !== 'admin') {
+//     return apiResponse(res, 403, 'Only admin can change roles');
+//   }
 
-  const allowedRoles = ['admin', 'teamleader', 'trainer', 'premiumuser', 'normaluser'];
-  if (!allowedRoles.includes(newRole)) {
-    return apiResponse(res, 400, 'Invalid role. Allowed roles: admin, teamleader, trainer, premiumuser, normaluser');
-  }
+//   const allowedRoles = ['admin', 'teamleader', 'trainer', 'premiumuser', 'normaluser'];
+//   if (!allowedRoles.includes(newRole)) {
+//     return apiResponse(res, 400, 'Invalid role. Allowed roles: admin, teamleader, trainer, premiumuser, normaluser');
+//   }
 
-  const targetUser = await User.findById(id);
-  if (!targetUser) {
-    return apiResponse(res, 404, 'User not found');
-  }
+//   const targetUser = await User.findById(id);
+//   if (!targetUser) {
+//     return apiResponse(res, 404, 'User not found');
+//   }
 
-  targetUser.role = newRole;
+//   targetUser.role = newRole;
 
-  if (newRole === 'trainer') {
-    targetUser.trainer = null;
-  } else if (newRole === 'premiumuser' && trainerId) {
-    targetUser.trainer = trainerId;
-  } else {
-    targetUser.trainer = null;
-  }
+//   if (newRole === 'trainer') {
+//     targetUser.trainer = null;
+//   } else if (newRole === 'premiumuser' && trainerId) {
+//     targetUser.trainer = trainerId;
+//   } else {
+//     targetUser.trainer = null;
+//   }
 
-  await targetUser.save();
+//   await targetUser.save();
 
-  return apiResponse(res, 200, 'Role updated successfully', {
-    id: targetUser._id,
-    fullname: targetUser.fullname,
-    email: targetUser.email,
-    role: targetUser.role,
-    trainer: targetUser.trainer,
-  });
-});
+//   return apiResponse(res, 200, 'Role updated successfully', {
+//     id: targetUser._id,
+//     fullname: targetUser.fullname,
+//     email: targetUser.email,
+//     role: targetUser.role,
+//     trainer: targetUser.trainer,
+//   });
+// });
 
 module.exports = {
   signup,
